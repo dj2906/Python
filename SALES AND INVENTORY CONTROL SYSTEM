@@ -1,0 +1,118 @@
+import mysql.connector from datetime import date amount=0
+print("*************************************************************
+*********************")
+print(" Welcome to Sales and Inventory Management
+System ")
+print("*************************************************************
+*********************") mydb=mysql.connector.connect(host="localhost",user="root",password=" 1318")
+mycursor=mydb.cursor()
+mycursor.execute("create database if not exists sales_vdo") mycursor.execute("use sales_vdo")
+mycursor.execute("create table if not exists login(username varchar(25) not null, password varchar(25))") mycursor.execute("create table if not exists purchase(odate date not null,name varchar(25) not null, pcode int not null,amount int not null)")
+mycursor.execute("create table if not exists stock(pcode int not null, pname varchar(25) not null, quantity int not null, price int not null)")
+mydb.commit() z=0
+mycursor.execute("select * from login")
+for i in mycursor: z+=1
+if z==0:
+mycursor.execute("insert into login values('username','ng')") mydb.commit()
+while True:
+print("""1.Admin 2.Customer
+3.Exit """)
+ch=int(input("Enter your choice: "))
+if (ch==1):
+passs=input("Enter password: ")
+mycursor.execute("select * from login")
+for i in mycursor: username,password=i if(passs==password):
+print("*********WELCOME**********") loop2='y'
+while(loop2=='y' or loop2=='Y'): print("""1.Add New Item
+2. Update price
+3. Delete item
+4. Display All Items
+5. Change the password
+6. Log out
+""")
+quantity: "))
+"))
+ch=int(input("Enter your choice: "))
+if ch==1:
+loop='y'
+while(loop=='y' or loop=='Y'): pcode=int(input("Enter product code: ")) pname=input("Enter product name: ") quantity=int(input("Enter product
+price=int(input("Enter product price: mycursor.execute("insert into stock
+values('"+str(pcode)+"','"+pname+"','"+str(quantity)+"','"+str(price
+)+"')")
+items(y/n): ")
+stock(y/n): ")
+"))
+mydb.commit()
+print("Record successfully inserted") loop=input("Do you want to enter more
+loop2=input("Do you want to continue editing
+elif(ch==2):
+loop='y'
+while(loop=='y' or loop=='Y'): pcode=int(input("Enter product code: ")) new_price=int(input("Enter new price:
+mycursor.execute("update stock set
+price=%s where pcode=%s",(str(new_price),str(pcode)))
+mydb.commit()
+loop=input("Do you want to change price
+of any other item(y/n): ")
+stock(y/n): ")
+loop2=input("Do you want to continue editing
+elif(ch==3):
+loop='y'
+while(loop=='y' or loop=='Y'): pcode=int(input("Enter product code:" )) mycursor.execute("delete from stock
+where pcode='"+str(pcode)+"'")
+mydb.commit()
+loop=input("Do you want to delete any
+other data(y/n): ") stock(y/n): ")
+loop2=input("Do you want to continue editing
+elif(ch==4):
+mycursor.execute("select * from stock") print("
+Pcodes|| Pname ||Quantity||Price ")
+for i in mycursor: t_code,t_name,t_quan,t_price=i print(f" {t_code} || {t_name} ||
+{t_quan} || {t_price} ")
+elif(ch==5):
+old_passs=input("Enter old password: ") mycursor.execute("select * from login") for i in mycursor:
+username,password=i
+if(old_passs==password): new_passs=input("Enter new Password: ") mycursor.execute("update login set
+password=%s",(new_passs,))
+mydb.commit()
+print("*******PASSWORD UPDATED*******")
+elif(ch==6): break
+else:
+print("Wrong password") #############Customer Section##############
+elif(ch==2):
+while True:
+print("""1.Item Bucket
+2.Payment
+3. View Available Items
+4. Go Back """)
+ch2=int(input("Enter your choice:"))
+if (ch2==1):
+name=input("Enter your name:") pcode=int(input("Enter product code:")) quantity=int(input("Enter quantity:")) mycursor.execute("select * from stock where
+pcode='"+str(pcode)+"'")
+for i in mycursor: t_code,t_name,t_quan,t_price=i
+amount=t_price*quantity net_quan=t_quan-quantity mycursor.execute("update stock set
+quantity='"+str(net_quan)+"' where pcode='"+str(pcode)+"'") mycursor.execute("insert into purchase
+values(%s,%s,%s,%s)",(date.today(),name,str(pcode),str(amount))) mydb.commit()
+elif(ch2==2):
+print("_"*100) print("
+BILL
+")
+print("_"*100) print("
+")
+print("
+Amount to be paid",amount," ")
+print("
+")
+print("_"*100)
+print(" Thank You for using Sales and Inventory
+Management System.... ")
+print("_"*100)
+elif(ch2==3):
+print("CODE || NAME || PRICE ") mycursor.execute("select * from stock") for i in mycursor:
+t_code,t_name,t_quan,t_price=i
+print(f" {t_code} || {t_name} || {t_price}
+")
+elif(ch2==4):
+print("Back to main menu")
+break elif(ch==3):
+print("************************Thank You for using Sales and Inventory Management System*************************")
+break
